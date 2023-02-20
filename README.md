@@ -31,9 +31,13 @@ transmitted over a STOMP connection. A STOMP frame has the following
 general format:
 
 < StompCommand >
+
 < HeaderName1 >: < HeaderValue1 >
+
 < HeaderName2 >: < HeaderValue2 >
+
 < FrameBody >
+
 ^ @
 
 A STOMP frame always starts with a STOMP command (for example, SEND)
