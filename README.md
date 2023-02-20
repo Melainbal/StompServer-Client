@@ -46,15 +46,21 @@ more header lines. Each header is in a <key>:<value> format and terminated by
 a newline. The order of the headers shouldn’t matter, that is, the frame:
 
 SUBSCRIBE
+  
 destination : / dest
+  
 id : 1
+  
 ^ @
 
 should be handled the same as:
 
 SUBSCRIBE
+  
 id : 1
-destination : / dest
+  
+destination : / dest  
+  
 ^ @
 
 and not cause an error due to permutation of the headers.
