@@ -83,10 +83,15 @@ A STOMP client initiates the stream or TCP connection to the server by sending
 the CONNECT frame:
 
 CONNECT
+  
 accept - version :1.2
+  
 host : stomp . cs . bgu . ac . il
+  
 login : meni
+  
 passcode : films
+  
 ^ @
 
 Your STOMP clients will set the following headers for a CONNECT frame:
@@ -111,7 +116,9 @@ The CONNECT sets <FrameBody> as empty.
 The sever may either response with a CONNECTED frame:
 
 CONNECTED
+  
 version :1.2
+  
 ^ @
 
 Or with an ERROR frame, as will be shown below.
@@ -146,10 +153,15 @@ Client frames:
 The MESSAGE command conveys messages from a subscription to the client.
 
 MESSAGE
+  
 subscription :78
+  
 message - id :20
+  
 destination :/ topic / a
+  
 Hello Topic a
+  
 ^ @
 
 The MESSAGE frame should contain the following headers:
@@ -170,7 +182,9 @@ A RECEIPT frame is sent from the server to the client once a server has
 successfully processed a client frame that requests a receipt.
 
 RECEIPT
+  
 receipt - id :32
+  
 ^ @
 
 The RECEIPT fame should contain the single header receipt-id, and it’s
@@ -192,17 +206,29 @@ The server MAY send ERROR frames if something goes wrong. In this case,
 it MUST then close the connection just after sending the ERROR frame.
 
 ERROR
+  
 receipt - id : message -12345
+  
 message : malformed frame received
+  
 The message :
+  
 -----
+  
 SEND
+  
 destined :/ queue / a
+  
 receipt : message -12345
+  
 Hello queue a !
+  
 -----
+  
 Did not contain a destination header ,
+  
 which is REQUIRED for message propagation .
+  
 ^ @
 
 The ERROR frame SHOULD contain a message header with a short description of the error, and the body MAY contain more detailed information
@@ -222,8 +248,11 @@ The SEND command sends a message to a destination - a topic in the
 messaging system.
 
 SEND
+  
 destination :/ topic / a
+  
 Hello topic a
+  
 ^ @
 
 The SEND frame should contain a single header, destination, which indicates which topic to send the message to.
@@ -241,8 +270,11 @@ send back an ERROR frame.
 The SUBSCRIBE command registers a client to a specific topic.
 
 SUBSCRIBE
+  
 destination :/ topic / a
+  
 id :78
+  
 ^ @
 
 The SUBSCRIBE frame should contain the following headers:
@@ -272,7 +304,9 @@ The UNSUBSCRIBE command removes an existing subscription, so that the
 client no longer receives messages from that destination.
 
 UNSUBSCRIBE
+  
 id :78
+  
 ^ @
 
 The UNSUBSCRIBE should contain a single header, id, which is the subscription ID supplied to the server with the SUBSCRIBE frame in the header with
@@ -284,7 +318,9 @@ The DISCONNECT command declares to the server that the
 client wants to disconnect from it.
 
 DISCONNECT
+  
 receipt :77
+  
 ^ @
 
 The DISCONNECT should contain a single header, receipt, which contains
@@ -300,7 +336,9 @@ that all previous frames have been received by the server, the client should:
 2. Wait for the RECEIPT frame response to the DISCONNECT. For example:
 
 RECEIPT
+  
 receipt - id :77
+  
 ^ @
 
 3. close the socket.
@@ -372,16 +410,23 @@ Example:
 ○ Frame sent:
 
 CONNECT
+  
 accept - version :1.2
+  
 host : stomp . cs . bgu . ac . il
+  
 login : meni
+  
 passcode : films
+  
 ^ @
 
 ○ Frame received:
 
 CONNECTED
+  
 version :1.2
+  
 ^ @
 
 • Join Game Channel command
@@ -406,15 +451,21 @@ Example:
 ○ Frame sent:
 
 SUBSCRIBE
+  
 destination :/ germany_spain
+  
 id :17
+  
 receipt :73
+  
 ^ @
 
 ○ Frame Received:
 
 RECEIPT
+  
 receipt - id :73
+  
 ^ @
 
 • Exit Game Channel command
@@ -434,14 +485,19 @@ Example:
 ○ Frame sent:
 
 UNSUBSCRIBE
+  
 id :17
+  
 receipt :82
+  
 ^ @
 
 ○ Frame received:
 
 RECEIPT
+  
 receipt - id :82
+  
 ^ @
 
 • Report to channel command
@@ -465,25 +521,45 @@ as well as the name of the {user}.
 An example of a SEND frame containing a report:
 
 SEND
+  
 destination :/ spain_japan
+  
 user : meni
+  
 team a : spain
+  
 team b : japan
+  
 event name : kickoff
+  
 time : 0
+  
 general game updates :
+  
 active : true
+  
 before halftime : true
+  
 team a updates :
+  
 a : b
+  
 c : d
+  
 e : f
+  
 team b updates :
+  
 a : b
+  
 c : d
+  
 e : f
+  
 description :
+  
 And we ’ re off !
+  
 ^ @
 
 You should format the body of your reports as in the example
@@ -505,38 +581,65 @@ assignment)
 ○ Frame sent:
 
 SEND
+  
 destination :/ germany_japan
+  
 user : meni
+  
 team a : germany
+  
 team b : japan
+  
 event name : kickoff
+  
 time : 0
-15
+
 general game updates :
+  
 active : true
+  
 before halftime : true
+  
 team a updates :
+  
 team b updates :
+  
 description :
+  
 The game has started ! What an exciting evening !
+  
 ^ @
 
 ○ Frame sent:
 
 SEND
+  
 destination :/ germany_japan
+  
 user : meni
+  
 team a : germany
+  
 team b : japan
+  
 event name : goal !!!!
+  
 time : 1980
+  
 general game updates :
+  
 team a updates :
+  
 goals : 1
+  
 possession : 90%
+  
 team b updates :
+  
 possession : 10%
+  
 description :
+  
 " GOOOAAALLL !!! Germany lead !!! Gundogan finally has
 success in the box as he steps up to take the
 penalty , sends Gonda the wrong way , and slots the
@@ -544,6 +647,7 @@ ball into the left - hand corner to put Germany 1 -0
 up ! A needless penalty to concede from Japan ’ s point
 of view , and after a bright start , the Samurai Blues
 trail !"
+  
 ^ @
 
 • Summarize Game command
@@ -553,27 +657,47 @@ trail !"
 ○ For this command the client will print the game updates it got from
 {user} for {game_name} into the provided {file}.
 The print format is as follows:
+  
 < team_a_name > vs < team_b_name >
+  
 Game stats :
+  
 General stats :
+  
 < stat_name1 >: < stat_val1 >
+  
 < stat_name2 >: < stat_val2 >
+  
 ...
+  
 < team_a_name > stats :
-16
+  
 < stat_name1 >: < stat_val1 >
+  
 < stat_name2 >: < stat_val2 >
+  
 ...
+  
 < team_b_name > stats :
+  
 < stat_name1 >: < stat_val1 >
+  
 < stat_name2 >: < stat_val2 >
+  
 ...
+  
 Game event reports :
+  
 < game_event_time1 > - < game_event_name1 >:
+  
 < game_event_description1 >
+  
 < game_event_time2 > - < game_event_name2 >:
+  
 < game_event_description2 >
+  
 ...
+  
 The game event reports should be printed in the order that they
 happened in the game, and the stats should be printed ordered lexicographically by their name. More on game events and game stats
 in the Game Event section.
@@ -605,13 +729,17 @@ Example:
 ○ Frame sent:
 
 DISCONNECT
+  
 receipt :113
+  
 ^ @
 
 ○ Frame received:
 
 RECEIPT
+  
 receipt - id :113
+  
 ^ @
 
 3.4 Game event
@@ -673,48 +801,88 @@ of both teams as well as a vector containing the parsed events.
 An example of the usage of the parser:
 names_and_events nne = parseEventsFile("data/events1_partial.json")
 An example of a game event in JSON format:
+  
 {
+  
 " event name ": " kickoff " ,
+  
 " time ": 0 ,
+  
 " general game updates ": {
+  
 " active ": true ,
+  
 " before halftime ": true
+  
 } ,
+  
 " team a updates ": {} ,
+  
 " team b updates ": {} ,
+  
 " description ": " The game has started ! What an
+  
 exciting evening !"
+  
 }
+  
 An example of a game events JSON file: (the events1_partial.json file provided
 in the template)
+  
 {
+  
 " team a ": " Germany " ,
+  
 " team b ": " Japan " ,
+  
 " events ": [
+  
 {
+  
 " event name ": " kickoff " ,
-19
+ 
 " time ": 0 ,
+  
 " general game updates ": {
+  
 " active ": true ,
+  
 " before halftime ": true
+  
 } ,
+  
 " team a updates ": {} ,
+  
 " team b updates ": {} ,
+  
 " description ": " The game has started ! What
+  
 an exciting evening !"
+  
 } ,
+  
 {
+  
 " event name ": " goal !!!!" ,
+  
 " time ": 1980 ,
+  
 " general game updates ": {} ,
+  
 " team a updates ": {
+  
 " goals ": "1" ,
+  
 " possession ": "90%"
+  
 } ,
+  
 " team b updates ": {
+  
 " possession ": "10%"
+  
 } ,
+  
 " description ": " GOOOAAALLL !!! Germany lead !!!
 Gundogan finally has success in
 the box as he steps up to take
@@ -726,9 +894,13 @@ penalty to concede from Japan ’ s
 point of view , and after a
 bright start , the Samurai Blues
 trail !"
+  
 }
+  
 ]
+  
 }
+  
 As you can see, you can determine the game_name reported on in the game events
 file from the properties team a and team b. The game events file also contains
 the events to report on in a list corresponding with the property events.
