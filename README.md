@@ -1,7 +1,5 @@
 # StompServer-Client
 
-1 General Description
-
 The world cup is upon us, and you want to stay updated. Thus, this is an implemention of a ”community-led” world cup update subscription
 service. Users can subscribe to a game channel and report and receive reports
 about the game to and from the other subscribed users.
@@ -13,6 +11,10 @@ choosing which one according to arguments given on startup. The client will be
 implemented in C++ and will hold the required logic as described below.
 All communication between the clients and the server will be according to
 STOMP ‘Simple-Text-Oriented-Messaging-Protocol’.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Additional information about implementation:
 
 2 Simple-Text-Oriented-Messaging-Protocol (STOMP)
 
